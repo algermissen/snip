@@ -1,1 +1,3 @@
 echo '{"foo": "lorem", "bar": "ipsum"}' | python -mjson.tool
+
+Source: http://stackoverflow.com/a/1920585/267196
