@@ -1,0 +1,28 @@
+#!/bin/bash
+# Debian iptables basic configure script
+
+iptables -F
+
+iptables -A INPUT -m state --state INVALID -j LOG --log-level 4 --log-prefix 'iptables InvalidDrop: '
+iptables -A INPUT -m state --state INVALID -j DROP
+
+iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+iptables -A INPUT -i lo -j ACCEPT
+iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+#iptables -A INPUT -p tcp --dport 8080 -j ACCEPT
+
+iptables -A INPUT -j LOG --log-level 4 --log-prefix 'iptables InDrop: '
+
+iptables -P INPUT DROP
+
+iptables -P FORWARD DROP
+iptables -P OUTPUT ACCEPT
+
+
+# Save settings (requires iptables-persistent package)
+iptables-save > /etc/iptables/rules.v4
+ip6tables-save > /etc/iptables/rules.v6
+
+# List rules
+iptables -L -v
