@@ -1,0 +1,24 @@
+static ngx_int_t ngx_dlg_auth_add_upstream_info_headers(ngx_http_request_t *r, Ticket ticket) {
+
+    if(ticket->client.len > 0) {
+        ngx_table_elt_t  *h;
+        ngx_str_t client;
+
+        client.len = ticket->client.len;
+        client.data = ticket->client.data;
+
+        if( (h = ngx_list_push(&r->upstream->headers_in.headers)) == NULL) {
+            return NGX_ERROR;
+        }
+
+        h->hash = 1;
+        ngx_str_set(&h->key, "Token-Client");
+        if( (h->value.data = ngx_pstrdup(r->pool,&client)) == NULL) {
+            return NGX_ERROR;
+        }
+
+        h->value.len = ticket->client.len;
+    }
+
+    return NGX_OK;
+}
