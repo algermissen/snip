@@ -1,0 +1,13 @@
+https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide
+
+mvn clean deploy
+mvn release:clean
+mvn release:prepare
+-> twins
+mvn release:perform
+
+https://oss.sonatype.org/index.html
+
+select staging repo
+close it
+release it
