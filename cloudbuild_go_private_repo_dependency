@@ -1,5 +1,5 @@
 # Based on https://cloud.google.com/cloud-build/docs/access-private-github-repos
-#
+# and assumes you have id_rsa.enc as described.
 #
 steps:
 - name: 'gcr.io/cloud-builders/gcloud'
@@ -36,10 +36,13 @@ steps:
   - '-c'
   - |
     mkdir root
+    # Here we copy the out-of-context .ssh dir into the local dir so that
+    # build container can COPY it to /root/.ssh with
+    # COPY ./root/.ssh /root/.ssh
     cp -r /root/.ssh root/.ssh
-    docker build -t eu.gcr.io/$PROJECT_ID/engine:$SHORT_SHA . 
+    docker build -t eu.gcr.io/$PROJECT_ID/YOURNAME:$SHORT_SHA . 
   volumes:
   - name: 'ssh'
     path: /root/.ssh
 - name: gcr.io/cloud-builders/docker
-  args: ['push', 'eu.gcr.io/$PROJECT_ID/engine:$SHORT_SHA']
+  args: ['push', 'eu.gcr.io/$PROJECT_ID/YOURNAME:$SHORT_SHA']
