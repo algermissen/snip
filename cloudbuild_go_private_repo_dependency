@@ -1,6 +1,14 @@
 # Based on https://cloud.google.com/cloud-build/docs/access-private-github-repos
 # and assumes you have id_rsa.enc as described.
 #
+# In your Dockerfile you need two lines to copy over the .ssh dir (see below)
+# and to tell git to use SSH:
+#
+# COPY ./root/.ssh /root/.ssh
+# RUN git config --global url.git@github.com:.insteadOf https://github.com/
+
+
+
 steps:
 - name: 'gcr.io/cloud-builders/gcloud'
   args:
